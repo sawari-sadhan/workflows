@@ -101,12 +101,13 @@ jobs:
           ssh -o StrictHostKeyChecking=no "${SSH_USER}@${SSH_HOST}" "mkdir -p ${TARGET_PATH}"
 
           echo "📦 Syncing code via rsync to VPS..."
+          eval "EXTRA_EXCLUDES_ARR=(${EXTRA_EXCLUDES})"
           rsync -avz --delete \
             --exclude='.git' \
             --exclude='.env' \
             --exclude='.env.*' \
             --exclude='.gocache' \
-            ${EXTRA_EXCLUDES} \
+            "${EXTRA_EXCLUDES_ARR[@]}" \
             -e "ssh -o StrictHostKeyChecking=no" \
             ./ "${SSH_USER}@${SSH_HOST}:${TARGET_PATH}"
 
