@@ -168,18 +168,26 @@ jobs:
           rm -f "${ENV_TEMP}"
 
           echo "🚀 Launching cellular container on VPS (Host Port: ${HOST_PORT} -> Container: ${PORT})..."
-          ssh -o StrictHostKeyChecking=no "${SSH_USER}@${SSH_HOST}" bash -se << EOF
+          ssh -o StrictHostKeyChecking=no "${SSH_USER}@${SSH_HOST}" 'bash -s' "${TARGET_PATH}" "${GIT_TAG}" "${SERVICE}" "${HOST_PORT}" "${PORT_DESC}" << 'REMOTE_EXEC'
+            TARGET_PATH="$1"
+            GIT_TAG="$2"
+            SERVICE="$3"
+            HOST_PORT="$4"
+            PORT_DESC="$5"
+
             if [ -n "${HOST_PORT}" ]; then
-              echo '🛡️ Configuring firewall for cellular host port ${HOST_PORT}...'
-              (command -v ufw >/dev/null 2>&1 && sudo ufw allow ${HOST_PORT}/tcp comment '${PORT_DESC} (${GIT_TAG})' 2>/dev/null && sudo ufw reload 2>/dev/null || true)
+              echo "🛡️ Configuring firewall for cellular host port ${HOST_PORT}..."
+              (command -v ufw >/dev/null 2>&1 && sudo ufw allow ${HOST_PORT}/tcp comment "${PORT_DESC} (${GIT_TAG})" 2>/dev/null && sudo ufw reload 2>/dev/null || true)
             fi
 
             cd "${TARGET_PATH}"
-            CLEAN_TAG=\$(echo "${GIT_TAG}" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
-            PROJECT_NAME="sawarisadhan-\${CLEAN_TAG}"
-            echo "🏗️ Building and launching \${PROJECT_NAME} for ${SERVICE}..."
-            docker compose -p "\${PROJECT_NAME}" build
-            docker compose -p "\${PROJECT_NAME}" up -d
+            CLEAN_TAG=$(echo "${GIT_TAG}" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
+            PROJECT_NAME="sawarisadhan-${CLEAN_TAG}"
+            echo "🏗️ Building and launching ${PROJECT_NAME} for ${SERVICE}..."
+            docker compose -p "${PROJECT_NAME}" build
+            docker compose -p "${PROJECT_NAME}" up -d
             sleep 3
-            docker compose -p "\${PROJECT_NAME}" ps
-EOF
+            docker compose -p "${PROJECT_NAME}" ps
+          REMOTE_EXEC
+
+
