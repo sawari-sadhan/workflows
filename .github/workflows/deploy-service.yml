@@ -73,6 +73,8 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_PRODUCTION: ${{ secrets.DATABASE_PRODUCTION }}
           DATABASE_GRAPH: ${{ secrets.DATABASE_GRAPH }}
+          DATABASE_SYSTEM: ${{ secrets.DATABASE_SYSTEM }}
+          DATABASE_ACCESS_TOKEN: ${{ secrets.DATABASE_ACCESS_TOKEN }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_ACCESS_TOKEN_SECRET: ${{ secrets.JWT_ACCESS_TOKEN_SECRET }}
           JWT_REFRESH_WEB_SECRET: ${{ secrets.JWT_REFRESH_WEB_SECRET }}
@@ -122,6 +124,8 @@ jobs:
           [ -n "${DATABASE_URL}" ] && echo "DATABASE_URL=${DATABASE_URL}" >> "${ENV_TEMP}"
           [ -n "${DATABASE_PRODUCTION}" ] && echo "DATABASE_PRODUCTION=${DATABASE_PRODUCTION}" >> "${ENV_TEMP}"
           [ -n "${DATABASE_GRAPH}" ] && echo "DATABASE_GRAPH=${DATABASE_GRAPH}" >> "${ENV_TEMP}"
+          [ -n "${DATABASE_SYSTEM}" ] && echo "DATABASE_SYSTEM=${DATABASE_SYSTEM}" >> "${ENV_TEMP}"
+          [ -n "${DATABASE_ACCESS_TOKEN}" ] && echo "DATABASE_ACCESS_TOKEN=${DATABASE_ACCESS_TOKEN}" >> "${ENV_TEMP}"
           [ -n "${JWT_SECRET}" ] && echo "JWT_SECRET=${JWT_SECRET}" >> "${ENV_TEMP}"
           [ -n "${JWT_ACCESS_TOKEN_SECRET}" ] && echo "JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}" >> "${ENV_TEMP}"
           [ -n "${JWT_REFRESH_WEB_SECRET}" ] && echo "JWT_REFRESH_WEB_SECRET=${JWT_REFRESH_WEB_SECRET}" >> "${ENV_TEMP}"
