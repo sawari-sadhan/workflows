@@ -178,7 +178,7 @@ jobs:
             CLEAN_TAG=$(echo "${GIT_TAG}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') &&
             PROJECT_NAME="sawarisadhan-${CLEAN_TAG}" &&
             echo "🏗️ Building and launching ${PROJECT_NAME} for ${SERVICE}..." &&
-            docker compose -p "${PROJECT_NAME}" build --no-cache \
+            docker compose -p "${PROJECT_NAME}" build \
               --build-arg GIT_TAG=${GIT_TAG} \
               --build-arg DEPLOY_TIMESTAMP=${DEPLOY_TIMESTAMP} \
               ${SERVICE} &&
